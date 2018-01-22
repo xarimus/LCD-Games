@@ -97,6 +97,10 @@ byte car[8] = {
 
 
 void setup() {
+  pinType(3, INPUT);
+  pinType(4, INPUT);
+  pinType(5, INPUT);
+  
   lcd.begin(16, 2);
   Serial.begin(9600);
   lcd.createChar(0, house);
@@ -838,7 +842,12 @@ int displayText(int area) {
 int inkeys() {
   while (debounce > millis()) {}
   int b = 1001;
-  while ( b > 1000) b = analogRead(A0);
+  while ( b > 1000)
+  {
+    if (digitalRead(3)) b = 25;//select
+    if (digitalRead(4)) b = 225;//up
+    if (digitalRead(5)) b = 425;//down
+  }
   debounce = millis() + 300;
   //if (b > 1000) return btnNone;
   if (b < 50) return btnSelect; //btnRight;
